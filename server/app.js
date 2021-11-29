@@ -4,6 +4,8 @@ require("./db");
 
 const express = require("express");
 
+const { isAuthenticated } = require("./middleware/jwt.middleware"); // <== IMPORT
+
 const app = express();
 
 require("./config")(app);
@@ -14,7 +16,9 @@ app.use("/api", allRoutes);
 const authRouter = require("./routes/auth.routes");
 app.use("/auth", authRouter);
 
-// ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
+const dataRouter = require("./routes/data.routes");
+app.use("/userData", isAuthenticated, dataRouter);
+
 require("./error-handling")(app);
 
 module.exports = app;

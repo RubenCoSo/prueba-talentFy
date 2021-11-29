@@ -3,9 +3,10 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User.model");
 
+const { isAuthenticated } = require("../middleware/jwt.middleware");
 const saltRounds = 10;
 
-module.exports.postNewUser = async (req, res, next) => {
+module.exports.postNewUser = (req, res, next) => {
   const { nameSurname, email, password } = req.body;
 
   if (email === "" || password === "" || nameSurname === "") {
@@ -64,7 +65,7 @@ module.exports.postNewUser = async (req, res, next) => {
     });
 };
 
-module.exports.checkUserLogin = async (req, res, next) => {
+module.exports.checkUserLogin = (req, res, next) => {
   const { email, password } = req.body;
 
   if (email === "" || password === "") {
@@ -99,4 +100,10 @@ module.exports.checkUserLogin = async (req, res, next) => {
       }
     })
     .catch((err) => res.status(500).json({ message: "Internal Server Error" }));
+};
+
+module.exports.getVerify = (req, res, next) => {
+  console.log(`req.payload`, req.payload);
+
+  res.status(200).json(req.payload);
 };

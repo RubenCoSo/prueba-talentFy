@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../context/auth.context";
 const API_URL = process.env.REACT_APP_SERVER_URL;
 
-export default function Login() {
+export default function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const { logInUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleEmail = (e) => {
@@ -21,10 +23,22 @@ export default function Login() {
 
     const requestBody = { email, password };
 
-    axios.post(`${API_URL}/auth/login`, requestBody).then((response) => {
-      console.log(response);
-    });
+    axios
+      .post(`${API_URL}/auth/login`, requestBody)
+      .then((response) => {
+        console.log(`JWT token`, response.data.authToken);
+
+        const token = response.data.authToken;
+        logInUser(token);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error);
+        // const errorDescription = error.response.data.message;
+        // setErrorMessage(errorDescription);
+      });
   };
+
   return (
     <>
       <Form className="login" onSubmit={handleLoginSubmit}>
