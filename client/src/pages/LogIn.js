@@ -34,8 +34,8 @@ export default function Login(props) {
       })
       .catch((error) => {
         console.log(error);
-        // const errorDescription = error.response.data.message;
-        // setErrorMessage(errorDescription);
+        const errorDescription = error.response.data.message;
+        setErrorMessage(errorDescription);
       });
   };
 

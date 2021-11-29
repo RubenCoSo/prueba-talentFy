@@ -76,7 +76,7 @@ module.exports.checkUserLogin = (req, res, next) => {
   User.findOne({ email })
     .then((foundUser) => {
       if (!foundUser) {
-        res.status(401).json({ message: "User not found." });
+        res.status(401).json({ message: "Wrong User or password" });
         return;
       }
 

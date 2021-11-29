@@ -30,7 +30,6 @@ function AuthProviderWrapper(props) {
           setIsLoading(false);
         });
     } else {
-      // If the token is not available
       setIsLoading(false);
     }
   };
